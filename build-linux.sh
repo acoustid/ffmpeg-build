@@ -12,8 +12,6 @@ then
 	wget $FFMPEG_TARBALL_URL
 fi
 
-apt-get install -y yasm pkg-config gcc-multilib
-
 : ${ARCH?}
 
 TARGET=$BASE_DIR/ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
@@ -40,4 +38,4 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 make -j 4
 make install
 
-chown -r $(uid $0):$(gid $0) -R $TARGET
+chown -r $(stat -c '%u:%g' $0) -R $TARGET

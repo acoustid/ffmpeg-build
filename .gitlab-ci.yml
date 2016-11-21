@@ -1,8 +1,5 @@
 image: docker.oxygene.sk/acoustid/chromaprint-build
 
-variables:
-  FFMPEG_VERSION: "3.2"
-
 cache:
   paths:
     - ffmpeg-*.tar.bz2
@@ -12,6 +9,15 @@ build:linux-i686:
   script: ARCH=i686 ./build-linux.sh
   artifacts:
     paths:
-      - ffmpeg-${FFMPEG_VERSION}-audio-linux-i686
+      - ffmpeg-*-audio-linux-i686
+  tags:
+    - docker
+
+build:linux-x86_64:
+  stage: build
+  script: ARCH=x86_64 ./build-linux.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-linux-x86_64
   tags:
     - docker
