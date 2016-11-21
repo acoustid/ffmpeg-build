@@ -18,4 +18,5 @@ build:linux-i686:
   stage: build
   script: ARCH=i686 ./build-linux.sh
   artifacts:
-    - ffmpeg-${FFMPEG_VERSION}-audio-linux-i686
+    paths:
+      - ffmpeg-${FFMPEG_VERSION}-audio-linux-i686
