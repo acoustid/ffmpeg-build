@@ -5,7 +5,7 @@ stages:
   - build
 
 variables:
-  FFMPEG_VERSION: 3.2
+  FFMPEG_VERSION: "3.2"
 
 tarball:
   stage: download
