@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-: ${FFMPEG_VERSION?}
-
+FFMPEG_VERSION=3.2
 FFMPEG_TARBALL=ffmpeg-$FFMPEG_VERSION.tar.bz2
 FFMPEG_TARBALL_URL=http://ffmpeg.org/releases/$FFMPEG_TARBALL
 
