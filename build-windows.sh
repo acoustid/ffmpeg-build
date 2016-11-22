@@ -38,6 +38,7 @@ FFMPEG_CONFIGURE_FLAGS+=(
     --extra-cflags='-static -static-libgcc -static-libstdc++'
     --enable-memalign-hack
     --target-os=mingw32
+    --arch=$ARCH
     --cross-prefix=$ARCH-w64-mingw32-
 )
 
