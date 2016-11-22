@@ -13,17 +13,16 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-avdevice
     --disable-avfilter
     --disable-swscale
+    --enable-rdft
     --enable-ffmpeg
     --disable-ffplay
     --disable-ffserver
-    --disable-ffprobe
     --disable-network
     --disable-muxers
     --disable-demuxers
     --disable-zlib
     --disable-bzlib
     --disable-iconv
-    --enable-rdft
     --disable-bsfs
     --disable-filters
     --disable-parsers
@@ -33,6 +32,7 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-encoders
     --disable-decoders
     --disable-hwaccels
+    --disable-nvenc
 
     --enable-protocol=file
     --enable-protocol=pipe
