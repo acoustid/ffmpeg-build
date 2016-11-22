@@ -23,7 +23,7 @@ cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
 FFMPEG_CONFIGURE_FLAGS+=(
-    --prefix=$BUILD_DIR/install/$TARGET
+    --prefix=$BASE_DIR/$TARGET
     --extra-cflags='-static -static-libgcc -static-libstdc++'
     --enable-memalign-hack
     --target-os=mingw32
@@ -32,10 +32,7 @@ FFMPEG_CONFIGURE_FLAGS+=(
 )
 
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
-make -j 2
+make
 make install
 
-cd $BUILD_DIR/install/$TARGET
-tar -cf $BASE_DIR/$TARGET.tar.gz .
-
-chown $(stat -c '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET.tar.gz
+chown $(stat -c '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET
