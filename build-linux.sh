@@ -14,8 +14,7 @@ fi
 
 : ${ARCH?}
 
-TARGET=$BASE_DIR/ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
-FFMPEG_CONFIGURE_FLAGS+=(--prefix=$TARGET)
+TARGET=ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
 
 case $ARCH in
 i686)
@@ -33,9 +32,13 @@ trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
+FFMPEG_CONFIGURE_FLAGS+=(--prefix=$BUILD_DIR/install/$TARGET)
 
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
 make -j 4
 make install
 
-chown $(stat -c '%u:%g' $BASE_DIR) -R $TARGET
+cd $BUILD_DIR/install/$TARGET
+tar -cf $BASE_DIR/$TARGET.tar.gz .
+
+chown $(stat -c '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET.tar.gz
