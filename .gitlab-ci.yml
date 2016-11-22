@@ -18,6 +18,6 @@ build:linux-x86_64:
   script: ARCH=x86_64 ./build-linux.sh
   artifacts:
     paths:
-      - ffmpeg-*-audio-linux-x86_64
+      - ffmpeg-*-audio-linux-x86_64.tar.gz
   tags:
     - docker
