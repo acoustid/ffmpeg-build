@@ -16,17 +16,6 @@ fi
 
 TARGET=ffmpeg-$FFMPEG_VERSION-audio-windows-$ARCH
 
-case $ARCH in
-i686)
-    FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
-    ;;
-x86_64)
-    ;;
-*)
-    echo "Unknown architecture"
-    exit 1
-esac
-
 BUILD_DIR=$(mktemp -d -p $(pwd) build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
