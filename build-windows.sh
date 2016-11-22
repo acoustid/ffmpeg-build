@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-TARGET=ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
+TARGET=ffmpeg-$FFMPEG_VERSION-audio-windows-$ARCH
 
 case $ARCH in
 i686)
@@ -32,7 +32,14 @@ trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
-FFMPEG_CONFIGURE_FLAGS+=(--prefix=$BUILD_DIR/install/$TARGET)
+
+FFMPEG_CONFIGURE_FLAGS+=(
+    --prefix=$BUILD_DIR/install/$TARGET
+    --extra-cflags='-static -static-libgcc -static-libstdc++'
+    --enable-memalign-hack
+    --target-os=mingw32
+    --cross-prefix=$ARCH-w64-mingw32-
+)
 
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
 make -j 2

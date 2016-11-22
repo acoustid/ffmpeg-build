@@ -21,3 +21,12 @@ build:linux-x86_64:
       - ffmpeg-*-audio-linux-x86_64.tar.gz
   tags:
     - docker
+
+build:windows-i686:
+  stage: build
+  script: ARCH=i686 ./build-windows.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-windows-i686
+  tags:
+    - docker
