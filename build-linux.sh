@@ -38,4 +38,4 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 make -j 4
 make install
 
-chown -r $(stat -c '%u:%g' $BASE_DIR) -R $TARGET
+chown $(stat -c '%u:%g' $BASE_DIR) -R $TARGET
