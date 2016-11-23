@@ -27,7 +27,7 @@ x86_64)
     exit 1
 esac
 
-BUILD_DIR=$(mktemp -d -p $(pwd) build.XXXXXXXX)
+BUILD_DIR=$(mktemp -d -t $(pwd) build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
