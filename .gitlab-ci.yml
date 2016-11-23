@@ -7,7 +7,7 @@ cache:
   paths:
     - ffmpeg-*.tar.bz2
 
-package linux i686:
+linux i686:
   stage: package
   script: ARCH=i686 ./build-linux.sh
   artifacts:
@@ -16,7 +16,7 @@ package linux i686:
   tags:
     - docker
 
-package linux x86_64:
+linux x86_64:
   stage: package
   script: ARCH=x86_64 ./build-linux.sh
   artifacts:
@@ -25,7 +25,7 @@ package linux x86_64:
   tags:
     - docker
 
-package windows i686:
+windows i686:
   stage: package
   script: ARCH=i686 ./build-windows.sh
   artifacts:
@@ -34,7 +34,7 @@ package windows i686:
   tags:
     - docker
 
-package windows x86_64:
+windows x86_64:
   stage: package
   script: ARCH=x86_64 ./build-windows.sh
   artifacts:
@@ -43,7 +43,7 @@ package windows x86_64:
   tags:
     - docker
 
-package macos i386:
+macos i386:
   stage: package
   script: ARCH=i386 ./build-macos.sh
   artifacts:
@@ -52,7 +52,7 @@ package macos i386:
   tags:
     - osx
 
-package macos x86_64:
+macos x86_64:
   stage: package
   script: ARCH=x86_64 ./build-macos.sh
   artifacts:
