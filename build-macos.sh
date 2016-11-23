@@ -9,7 +9,7 @@ source common.sh
 
 if [ ! -e $FFMPEG_TARBALL ]
 then
-	wget $FFMPEG_TARBALL_URL
+	curl -O $FFMPEG_TARBALL_URL
 fi
 
 : ${ARCH?}
