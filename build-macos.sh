@@ -29,15 +29,13 @@ esac
 
 pwd
 
-BUILD_DIR=$(mktemp -d -t $BASE_DIR build.XXXXXXXX)
+BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-export CC=/usr/local/bin/gcc-5
-export CXX=/usr/bin/g++-5
-
+OSX_CC=/usr/local/bin/gcc-5
 OSX_SDK=/Developer/SDKs/MacOSX10.4u.sdk
 OSX_VERSION=10.4
 
@@ -46,17 +44,16 @@ FFMPEG_CONFIGURE_FLAGS+=(
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-#	--cc=$OSX_CC
+	--cc=$OSX_CC
 	--enable-memalign-hack
 	--extra-ldflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 	--extra-cflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 )
 
-mv configure configure.old
-grep -v mach_mach_time_h configure.old >configure
-chmod +x configure
-
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
+
+perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
+
 make
 make install
 
