@@ -33,6 +33,7 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-decoders
     --disable-hwaccels
     --disable-nvenc
+    --disable-xvmc
 
     --enable-protocol=file
     --enable-protocol=pipe

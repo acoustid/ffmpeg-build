@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-TARGET=ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
+TARGET=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
 
 case $ARCH in
 i686)
@@ -26,8 +26,6 @@ x86_64)
     echo "Unknown architecture"
     exit 1
 esac
-
-pwd
 
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
@@ -57,4 +55,4 @@ perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 make
 make install
 
-chown $(stat -c '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET
+chown $(stat -f '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET

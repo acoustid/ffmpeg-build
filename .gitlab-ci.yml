@@ -40,14 +40,14 @@ cache:
 #  tags:
 #    - docker
 
-#build:macos-i386:
-#  stage: build
-#  script: ARCH=i386 ./build-macos.sh
-#  artifacts:
-#    paths:
-#      - ffmpeg-*-audio-macos-**
-#  tags:
-#    - osx
+build:macos-i386:
+  stage: build
+  script: ARCH=i386 ./build-macos.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-macos-**
+  tags:
+    - osx
 
 build:macos-x86_64:
   stage: build
