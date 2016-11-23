@@ -32,6 +32,8 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-hwaccels
     --disable-nvenc
     --disable-xvmc
+    --disable-videotoolbox
+    --disable-audiotoolbox
 
     --disable-filters
     --enable-filter=aformat
