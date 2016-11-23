@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -eux
 
 cd $(dirname $0)
 BASE_DIR=$(pwd)
@@ -27,7 +27,9 @@ x86_64)
     exit 1
 esac
 
-BUILD_DIR=$(mktemp -d -t $(pwd) build.XXXXXXXX)
+pwd
+
+BUILD_DIR=$(mktemp -d -t $BASE_DIR build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
