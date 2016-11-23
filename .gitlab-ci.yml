@@ -4,38 +4,56 @@ cache:
   paths:
     - ffmpeg-*.tar.bz2
 
-build:linux-i686:
-  stage: build
-  script: ARCH=i686 ./build-linux.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-linux-i686
-  tags:
-    - docker
+#build:linux-i686:
+#  stage: build
+#  script: ARCH=i686 ./build-linux.sh
+#  artifacts:
+#    paths:
+#      - ffmpeg-*-audio-linux-i686
+#  tags:
+#    - docker
+#
+#build:linux-x86_64:
+#  stage: build
+#  script: ARCH=x86_64 ./build-linux.sh
+#  artifacts:
+#    paths:
+#      - ffmpeg-*-audio-linux-x86_64
+#  tags:
+#    - docker
+#
+#build:windows-i686:
+#  stage: build
+#  script: ARCH=i686 ./build-windows.sh
+#  artifacts:
+#    paths:
+#      - ffmpeg-*-audio-windows-i686
+#  tags:
+#    - docker
+#
+#build:windows-x86_64:
+#  stage: build
+#  script: ARCH=x86_64 ./build-windows.sh
+#  artifacts:
+#    paths:
+#      - ffmpeg-*-audio-windows-x86_64
+#  tags:
+#    - docker
 
-build:linux-x86_64:
-  stage: build
-  script: ARCH=x86_64 ./build-linux.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-linux-x86_64
-  tags:
-    - docker
+#build:macos-i386:
+#  stage: build
+#  script: ARCH=i386 ./build-macos.sh
+#  artifacts:
+#    paths:
+#      - ffmpeg-*-audio-macos-**
+#  tags:
+#    - osx
 
-build:windows-i686:
+build:macos-x86_64:
   stage: build
-  script: ARCH=i686 ./build-windows.sh
+  script: ARCH=x86_64 ./build-macos.sh
   artifacts:
     paths:
-      - ffmpeg-*-audio-windows-i686
+      - ffmpeg-*-audio-macos-*
   tags:
-    - docker
-
-build:windows-x86_64:
-  stage: build
-  script: ARCH=x86_64 ./build-windows.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-windows-x86_64
-  tags:
-    - docker
+    - osx
