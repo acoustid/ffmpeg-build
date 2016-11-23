@@ -16,17 +16,6 @@ fi
 
 TARGET=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
 
-case $ARCH in
-i686)
-    FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
-    ;;
-x86_64)
-    ;;
-*)
-    echo "Unknown architecture"
-    exit 1
-esac
-
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
