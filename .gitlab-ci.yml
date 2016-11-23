@@ -1,47 +1,50 @@
 image: docker.oxygene.sk/acoustid/chromaprint-build
 
+stages:
+  - package
+
 cache:
   paths:
     - ffmpeg-*.tar.bz2
 
-#build:linux-i686:
-#  stage: build
-#  script: ARCH=i686 ./build-linux.sh
-#  artifacts:
-#    paths:
-#      - ffmpeg-*-audio-linux-i686
-#  tags:
-#    - docker
-#
-#build:linux-x86_64:
-#  stage: build
-#  script: ARCH=x86_64 ./build-linux.sh
-#  artifacts:
-#    paths:
-#      - ffmpeg-*-audio-linux-x86_64
-#  tags:
-#    - docker
-#
-#build:windows-i686:
-#  stage: build
-#  script: ARCH=i686 ./build-windows.sh
-#  artifacts:
-#    paths:
-#      - ffmpeg-*-audio-windows-i686
-#  tags:
-#    - docker
-#
-#build:windows-x86_64:
-#  stage: build
-#  script: ARCH=x86_64 ./build-windows.sh
-#  artifacts:
-#    paths:
-#      - ffmpeg-*-audio-windows-x86_64
-#  tags:
-#    - docker
+package linux i686:
+  stage: package
+  script: ARCH=i686 ./build-linux.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-linux-i686
+  tags:
+    - docker
 
-build:macos-i386:
-  stage: build
+package linux x86_64:
+  stage: package
+  script: ARCH=x86_64 ./build-linux.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-linux-x86_64
+  tags:
+    - docker
+
+package windows i686:
+  stage: package
+  script: ARCH=i686 ./build-windows.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-windows-i686
+  tags:
+    - docker
+
+package windows x86_64:
+  stage: package
+  script: ARCH=x86_64 ./build-windows.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-windows-x86_64
+  tags:
+    - docker
+
+package macos i386:
+  stage: package
   script: ARCH=i386 ./build-macos.sh
   artifacts:
     paths:
@@ -49,8 +52,8 @@ build:macos-i386:
   tags:
     - osx
 
-build:macos-x86_64:
-  stage: build
+package macos x86_64:
+  stage: package
   script: ARCH=x86_64 ./build-macos.sh
   artifacts:
     paths:
