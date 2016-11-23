@@ -11,7 +11,6 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-doc
     --disable-debug
     --disable-avdevice
-    --disable-avfilter
     --disable-swscale
     --enable-rdft
     --enable-ffmpeg
@@ -26,7 +25,6 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-bsfs
     --disable-filters
     --disable-parsers
-    --disable-protocols
     --disable-indevs
     --disable-outdevs
     --disable-encoders
@@ -35,6 +33,16 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-nvenc
     --disable-xvmc
 
+    --disable-filters
+    --enable-filter=aformat
+    --enable-filter=anull
+    --enable-filter=atrim
+    --enable-filter=format
+    --enable-filter=null
+    --enable-filter=setpts
+    --enable-filter=trim
+
+    --disable-protocols
     --enable-protocol=file
     --enable-protocol=pipe
 

@@ -44,4 +44,4 @@ perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 make
 make install
 
-chown $(stat -f '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET
+chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$TARGET
