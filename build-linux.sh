@@ -20,7 +20,7 @@ case $ARCH in
 i686)
     FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
     ;;
-x86_64|armv6l)
+x86_64|armhf)
     ;;
 *)
     echo "Unknown architecture"

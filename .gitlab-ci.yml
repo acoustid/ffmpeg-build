@@ -25,9 +25,9 @@ linux x86_64:
   tags:
     - docker
 
-linux armv6l:
+linux armhf:
   stage: package
-  script: ARCH=armv6l ./build-linux.sh
+  script: ARCH=armhf ./build-linux.sh
   artifacts:
     paths:
       - ffmpeg-*-audio-linux-*
