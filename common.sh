@@ -123,7 +123,6 @@ FFMPEG_CONFIGURE_FLAGS=(
     --enable-decoder=ralf
     --enable-decoder=shorten
     --enable-decoder=tak
-    --enable-decoder=truehd
     --enable-decoder=tta
     --enable-decoder=vorbis
     --enable-decoder=wavpack
@@ -178,6 +177,4 @@ FFMPEG_CONFIGURE_FLAGS=(
     --enable-parser=mpegaudio
     --enable-parser=tak
     --enable-parser=vorbis
-    --enable-parser=vp3
-    --enable-parser=vp8
 )
