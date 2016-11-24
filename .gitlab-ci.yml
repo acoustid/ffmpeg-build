@@ -13,6 +13,7 @@ linux i686:
   artifacts:
     paths:
       - ffmpeg-*-audio-linux-*
+    expire_in: 7d
   tags:
     - docker
 
@@ -22,6 +23,7 @@ linux x86_64:
   artifacts:
     paths:
       - ffmpeg-*-audio-linux-*
+    expire_in: 7d
   tags:
     - docker
 
@@ -31,6 +33,7 @@ linux armhf:
   artifacts:
     paths:
       - ffmpeg-*-audio-linux-*
+    expire_in: 7d
   tags:
     - raspberrypi
 
@@ -40,6 +43,7 @@ windows i686:
   artifacts:
     paths:
       - ffmpeg-*-audio-windows-i686
+    expire_in: 7d
   tags:
     - docker
 
@@ -49,6 +53,7 @@ windows x86_64:
   artifacts:
     paths:
       - ffmpeg-*-audio-windows-x86_64
+    expire_in: 7d
   tags:
     - docker
 
@@ -58,6 +63,7 @@ macos i386:
   artifacts:
     paths:
       - ffmpeg-*-audio-macos-**
+    expire_in: 7d
   tags:
     - osx
 
@@ -67,5 +73,6 @@ macos x86_64:
   artifacts:
     paths:
       - ffmpeg-*-audio-macos-*
+    expire_in: 7d
   tags:
     - osx
