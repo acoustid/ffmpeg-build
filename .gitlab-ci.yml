@@ -12,7 +12,7 @@ linux i686:
   script: ARCH=i686 ./build-linux.sh
   artifacts:
     paths:
-      - ffmpeg-*-audio-linux-i686
+      - ffmpeg-*-audio-linux-*
   tags:
     - docker
 
@@ -21,9 +21,18 @@ linux x86_64:
   script: ARCH=x86_64 ./build-linux.sh
   artifacts:
     paths:
-      - ffmpeg-*-audio-linux-x86_64
+      - ffmpeg-*-audio-linux-*
   tags:
     - docker
+
+linux armv6l:
+  stage: package
+  script: ARCH=armv6l ./build-linux.sh
+  artifacts:
+    paths:
+      - ffmpeg-*-audio-linux-*
+  tags:
+    - raspberrypi
 
 windows i686:
   stage: package
