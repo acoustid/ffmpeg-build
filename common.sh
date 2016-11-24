@@ -175,7 +175,6 @@ FFMPEG_CONFIGURE_FLAGS=(
     --enable-parser=dca
     --enable-parser=flac
     --enable-parser=gsm
-    --enable-parser=mlp
     --enable-parser=mpegaudio
     --enable-parser=tak
     --enable-parser=vorbis
