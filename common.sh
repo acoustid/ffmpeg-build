@@ -4,6 +4,11 @@ FFMPEG_VERSION=3.2.1
 FFMPEG_TARBALL=ffmpeg-$FFMPEG_VERSION.tar.bz2
 FFMPEG_TARBALL_URL=http://ffmpeg.org/releases/$FFMPEG_TARBALL
 
+if [ ! -e $FFMPEG_TARBALL ]
+then
+	curl -s -L -o $FFMPEG_TARBALL_URL
+fi
+
 FFMPEG_CONFIGURE_FLAGS=(
     --disable-shared
     --enable-static

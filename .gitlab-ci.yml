@@ -1,5 +1,3 @@
-image: docker.oxygene.sk/acoustid/chromaprint-build
-
 stages:
   - package
 
@@ -7,72 +5,43 @@ cache:
   paths:
     - ffmpeg-*.tar.bz2
 
-linux i686:
+.package: &package
   stage: package
-  script: ARCH=i686 ./build-linux.sh
+  script:
+    - JOB_NAME=($CI_BUILD_NAME)
+    - ARCH=${JOB_NAME[1]} ./build-${JOB_NAME[1]}.sh
   artifacts:
     paths:
-      - ffmpeg-*-audio-linux-*
+      - ffmpeg-*-audio-*-*
     expire_in: 7d
+
+.package-docker: &package-docker
+  <<: *package
+  image: docker.oxygene.sk/acoustid/chromaprint-build
   tags:
     - docker
 
-linux x86_64:
-  stage: package
-  script: ARCH=x86_64 ./build-linux.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-linux-*
-    expire_in: 7d
-  tags:
-    - docker
+#linux i686: *package-docker
+#linux x86_64: *package-docker
+#linux armhf:
+#  <<: *package
+#  tags:
+#    - raspberrypi
 
-linux armhf:
-  stage: package
-  script: ARCH=armhf ./build-linux.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-linux-*
-    expire_in: 7d
-  tags:
-    - raspberrypi
+#windows i686: *package-docker
+#windows x86_64: *package-docker
 
-windows i686:
-  stage: package
-  script: ARCH=i686 ./build-windows.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-windows-i686
-    expire_in: 7d
-  tags:
-    - docker
-
-windows x86_64:
-  stage: package
-  script: ARCH=x86_64 ./build-windows.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-windows-x86_64
-    expire_in: 7d
-  tags:
-    - docker
-
-macos i386:
-  stage: package
-  script: ARCH=i386 ./build-macos.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-macos-**
-    expire_in: 7d
+.package-macos: &package-macos
+  <<: *package
   tags:
     - osx
 
-macos x86_64:
-  stage: package
-  script: ARCH=x86_64 ./build-macos.sh
-  artifacts:
-    paths:
-      - ffmpeg-*-audio-macos-*
-    expire_in: 7d
-  tags:
-    - osx
+#macos i386: *package-macos
+#macos x86_64: *package-macos
+
+.package-android: &package-android
+  <<: *package-docker
+  image: docker.oxygene.sk/acoustid/chromaprint-build:android
+
+android armeabi: *package-android
+#android armeabi-v7a: *package-android
