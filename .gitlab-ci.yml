@@ -9,7 +9,7 @@ cache:
   stage: package
   script:
     - JOB_NAME=($CI_BUILD_NAME)
-    - ARCH=${JOB_NAME[1]} ./build-${JOB_NAME[1]}.sh
+    - ARCH=${JOB_NAME[1]} ./build-${JOB_NAME[0]}.sh
   artifacts:
     paths:
       - ffmpeg-*-audio-*-*
