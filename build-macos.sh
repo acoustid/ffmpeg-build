@@ -22,7 +22,6 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-OSX_CC=/usr/local/bin/gcc-5
 OSX_SDK=/Developer/SDKs/MacOSX10.4u.sdk
 OSX_VERSION=10.4
 
@@ -31,7 +30,6 @@ FFMPEG_CONFIGURE_FLAGS+=(
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-	--cc=$OSX_CC
 	--enable-memalign-hack
 	--extra-ldflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 	--extra-cflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
