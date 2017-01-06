@@ -32,7 +32,8 @@ linux armhf:
     paths:
       - ffmpeg-*-audio-linux-*
   tags:
-    - raspberrypi
+    - linux
+    - armhf
 
 windows i686:
   stage: package
