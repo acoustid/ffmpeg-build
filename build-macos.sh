@@ -22,8 +22,8 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-OSX_SDK=/Developer/SDKs/MacOSX10.4u.sdk
-OSX_VERSION=10.4
+OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+OSX_VERSION=10.6
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --prefix=$BASE_DIR/$TARGET
