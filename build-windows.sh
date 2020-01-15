@@ -25,7 +25,6 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 FFMPEG_CONFIGURE_FLAGS+=(
     --prefix=$BASE_DIR/$TARGET
     --extra-cflags='-static -static-libgcc -static-libstdc++'
-    --enable-memalign-hack
     --target-os=mingw32
     --arch=$ARCH
     --cross-prefix=$ARCH-w64-mingw32-

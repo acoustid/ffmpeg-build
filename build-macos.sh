@@ -22,15 +22,14 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk
+OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk
 OSX_VERSION=10.6
 
 FFMPEG_CONFIGURE_FLAGS+=(
-    --prefix=$BASE_DIR/$TARGET
+	--prefix=$BASE_DIR/$TARGET
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-	--enable-memalign-hack
 	--extra-ldflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 	--extra-cflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 )
