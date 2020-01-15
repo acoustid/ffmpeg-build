@@ -11,7 +11,7 @@ jobs:
       matrix:
         arch:
           - x86_64
-          - i686
+#          - i686
     env:
       ARCH: ${{ matrix.arch }}
     steps:
