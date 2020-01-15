@@ -77,12 +77,28 @@ jobs:
           path: artifacts/
 
   release:
+    runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
-      - package-macos
       - package-linux
       - package-windows
+      - package-macos
     steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-linux-x86_64
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-linux-i686
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-windows-x86_64
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-windows-i686
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-macos-x86_64
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
