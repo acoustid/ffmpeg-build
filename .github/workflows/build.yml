@@ -75,3 +75,17 @@ jobs:
         with:
           name: ffmpeg-macos-${{ env.ARCH }}
           path: artifacts/
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - package-macos
+      - package-linux
+      - package-windows
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
