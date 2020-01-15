@@ -12,9 +12,10 @@ FFMPEG_CONFIGURE_FLAGS=(
     --disable-debug
     --disable-avdevice
     --disable-swscale
+    --disable-programs
     --enable-rdft
     --enable-ffmpeg
-    --disable-ffplay
+    --enable-ffprobe
     --disable-network
     --disable-muxers
     --disable-demuxers
