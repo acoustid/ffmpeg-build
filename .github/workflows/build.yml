@@ -11,13 +11,13 @@ jobs:
       matrix:
         arch:
           - x86_64
-#          - i686
+          - i686
     env:
       ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        run: sudo apt-get install nasm
+        run: sudo apt-get install nasm gcc-multilib
       - name: Build
         run: |
           mkdir artifacts
