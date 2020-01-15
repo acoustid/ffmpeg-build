@@ -1,0 +1,62 @@
+name: Build static ffmpeg
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  package-linux:
+    runs-on: ubuntu-latest
+    env:
+      ARCH: x86_64
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: sudo apt-get install nasm
+    - name: Build
+      run: |
+        mkdir artifacts
+        ./build-linux.sh
+        mv ffmpeg-*-audio-linux-* artifacts
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: ffmpeg-${{ runner.os }}-${{ env.ARCH }}
+        path: artifacts/
+
+  package-macos:
+    runs-on: macos-latest
+    env:
+      ARCH: x86_64
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: brew install nasm
+    - name: Build
+      run: |
+        mkdir artifacts
+        ./build-macos.sh
+        mv ffmpeg-*-audio-macos-** artifacts
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: ffmpeg-${{ runner.os }}-${{ env.ARCH }}
+        path: artifacts/
+
+  # package-windows:
+  #   runs-on: windows-latest
+  #   env:
+  #     ARCH: x86_64
+  #   steps:
+  #   - uses: actions/checkout@v1
+  #   - name: Build
+  #     shell: bash
+  #     run: |
+  #       mkdir artifacts
+  #       ./build-windows.sh
+  #       mv ffmpeg-*-audio-windows-x86_64 artifacts
+  #   - name: Archive production artifacts
+  #     uses: actions/upload-artifact@v1
+  #     with:
+  #       name: ffmpeg-${{ runner.os }}-${{ env.ARCH }}
+  #       path: artifacts/
