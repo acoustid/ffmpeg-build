@@ -87,21 +87,36 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-linux-x86_64
+          path: artifacts/
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-linux-i686
+          path: artifacts/
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-windows-x86_64
+          path: artifacts/
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-windows-i686
+          path: artifacts/
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-macos-x86_64
+          path: artifacts/
+      - name: Make tarballs
+        run: |
+          mkdir artifacts/release/
+          cd artifacts/
+          dirs=$(find . -name 'ffmpeg-*' -type d)
+          for dir in $dirs
+          do
+            name=$(basename $dir)
+            tar cvf release/$name.tar.gz $dir
+          done
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: artifacts/*
+          files: artifacts/release/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
