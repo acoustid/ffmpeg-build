@@ -112,7 +112,7 @@ jobs:
           for dir in $dirs
           do
             name=$(basename $dir)
-            tar cvf release/$name.tar.gz $dir
+            tar cvzf release/$name.tar.gz $dir
           done
       - name: Release
         uses: softprops/action-gh-release@v1
