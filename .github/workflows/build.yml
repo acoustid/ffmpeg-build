@@ -12,12 +12,19 @@ jobs:
         arch:
           - x86_64
           - i686
+          - armhf
     env:
       ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        run: sudo apt-get install nasm gcc-multilib
+        run: sudo apt-get install nasm
+      - name: Install i686 cross-compile dependencies
+        run: sudo apt-get install gcc-multilib
+        if: matrix.arch == 'i686'
+      - name: Install armhf cross-compile dependencies
+        run: sudo apt-get install gcc-multilib-arm-linux-gnueabihf
+        if: matrix.arch == 'armhf'
       - name: Build
         run: |
           mkdir artifacts
@@ -91,6 +98,10 @@ jobs:
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-linux-i686
+          path: artifacts/
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-linux-armhf
           path: artifacts/
       - uses: actions/download-artifact@v1
         with:

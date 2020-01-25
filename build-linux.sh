@@ -20,7 +20,29 @@ case $ARCH in
 i686)
     FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
     ;;
-x86_64|armhf)
+armhf*)
+    FFMPEG_CONFIGURE_FLAGS+=(
+        --enable-cross-compile
+        --cross-prefix=arm-linux-gnueabihf-
+        --target-os=linux
+        --arch=arm
+    )
+    case $ARCH in
+    armhf-rpi2)
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --cpu=cortex-a7
+            --extra-cflags='-fPIC -mcpu=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -mvectorize-with-neon-quad'
+        )
+        ;;
+    armhf-rpi3)
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --cpu=cortex-a53
+            --extra-cflags='-fPIC -mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mvectorize-with-neon-quad'
+        )
+        ;;
+    esac
+    ;;
+x86_64)
     ;;
 *)
     echo "Unknown architecture"
