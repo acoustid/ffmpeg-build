@@ -12,7 +12,8 @@ jobs:
         arch:
           - x86_64
           - i686
-          - armhf
+          - armv7-a
+          - armv8-a
     env:
       ARCH: ${{ matrix.arch }}
     steps:
@@ -24,7 +25,7 @@ jobs:
         if: matrix.arch == 'i686'
       - name: Install armhf cross-compile dependencies
         run: sudo apt-get install gcc-multilib-arm-linux-gnueabihf
-        if: matrix.arch == 'armhf'
+        if: startsWith(matrix.arch, 'arm')
       - name: Build
         run: |
           mkdir artifacts
@@ -95,26 +96,37 @@ jobs:
         with:
           name: ffmpeg-linux-x86_64
           path: artifacts/
+
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-linux-i686
           path: artifacts/
+
       - uses: actions/download-artifact@v1
         with:
-          name: ffmpeg-linux-armhf
+          name: ffmpeg-linux-armv7-a
           path: artifacts/
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-linux-armv8-a
+          path: artifacts/
+
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-windows-x86_64
           path: artifacts/
+
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-windows-i686
           path: artifacts/
+
       - uses: actions/download-artifact@v1
         with:
           name: ffmpeg-macos-x86_64
           path: artifacts/
+
       - name: Make tarballs
         run: |
           mkdir artifacts/release/

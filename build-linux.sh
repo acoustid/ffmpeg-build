@@ -20,7 +20,7 @@ case $ARCH in
 i686)
     FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
     ;;
-armhf*)
+arm*)
     FFMPEG_CONFIGURE_FLAGS+=(
         --enable-cross-compile
         --cross-prefix=arm-linux-gnueabihf-
@@ -28,6 +28,16 @@ armhf*)
         --arch=arm
     )
     case $ARCH in
+    armv7-a)
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --cpu=armv7-a
+        )
+        ;;
+    armv8-a)
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --cpu=armv8-a
+        )
+        ;;
     armhf-rpi2)
         FFMPEG_CONFIGURE_FLAGS+=(
             --cpu=cortex-a7
