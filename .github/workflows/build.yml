@@ -6,6 +6,7 @@ on:
 
 jobs:
   package-linux:
+    runs-on: ubuntu-latest
     container: quay.io/acoustid/chromaprint-build-base
     strategy:
       matrix:
