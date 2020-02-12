@@ -7,7 +7,7 @@ on:
 jobs:
   package-linux:
     runs-on: ubuntu-latest
-    container: quay.io/acoustid/chromaprint-build-base
+    container: quay.io/acoustid/chromaprint-build-base:master
     strategy:
       matrix:
         arch:
