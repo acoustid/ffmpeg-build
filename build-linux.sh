@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -xeu
 
 cd $(dirname $0)
 BASE_DIR=$(pwd)
@@ -72,3 +72,5 @@ make
 make install
 
 chown $(stat -c '%u:%g' $BASE_DIR) -R $BASE_DIR/$TARGET
+#cd $BASE_DIR
+#tar -czvf $TARGET.tar.gz $TARGET

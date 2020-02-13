@@ -5,31 +5,20 @@ on:
   pull_request:
 
 jobs:
-  package-linux:
+  package-alpine:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         arch:
           - x86_64
-          - i686
-          - armv7-a
-          - armv8-a
     env:
       ARCH: ${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v1
-      - name: Install dependencies
-        run: sudo apt-get install nasm
-      - name: Install i686 cross-compile dependencies
-        run: sudo apt-get install gcc-multilib
-        if: matrix.arch == 'i686'
-      - name: Install armhf cross-compile dependencies
-        run: sudo apt-get install gcc-multilib-arm-linux-gnueabihf
-        if: startsWith(matrix.arch, 'arm')
+      - uses: actions/checkout@v2
       - name: Build
         run: |
+          docker run alpine:latest -v $GITHUB_WORKSPACE:/project -w /project /bin/sh ./build-alpine.sh
           mkdir artifacts
-          ./build-linux.sh
           mv ffmpeg-*-audio-linux-* artifacts
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
@@ -88,43 +77,11 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     needs:
-      - package-linux
-      - package-windows
-      - package-macos
+      - package-alpine
     steps:
       - uses: actions/download-artifact@v1
         with:
-          name: ffmpeg-linux-x86_64
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-linux-i686
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-linux-armv7-a
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-linux-armv8-a
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-windows-x86_64
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-windows-i686
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-macos-x86_64
+          name: ffmpeg-alpine-x86_64
           path: artifacts/
 
       - name: Make tarballs
