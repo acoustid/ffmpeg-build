@@ -87,27 +87,7 @@ jobs:
 
       - uses: actions/download-artifact@v1
         with:
-          name: ffmpeg-linux-i686
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-linux-armv7-a
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-linux-armv8-a
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
           name: ffmpeg-windows-x86_64
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-windows-i686
           path: artifacts/
 
       - uses: actions/download-artifact@v1
