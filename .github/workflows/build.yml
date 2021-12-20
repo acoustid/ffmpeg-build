@@ -73,11 +73,11 @@ jobs:
         run: |
           mkdir artifacts
           ./build-macos.sh
-          mv ffmpeg-*-audio-macos-** artifacts
+          mv ffmpeg-*-{{ matrix.target }} artifacts
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: ffmpeg-macos-${{ env.ARCH }}
+          name: ffmpeg-{{ matrix.target }}
           path: artifacts/
 
   release:
