@@ -22,9 +22,6 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-EXTRA_CFLAGS=""
-EXTRA_LDFLAGS=""
-
 case $ARCH in
     x86_64)
         EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
