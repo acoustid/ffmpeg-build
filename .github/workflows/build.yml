@@ -5,6 +5,50 @@ on:
   pull_request:
 
 jobs:
+  package-linux:
+    runs-on: ubuntu-latest
+    container: quay.io/acoustid/chromaprint-build-base:xenial
+    strategy:
+      matrix:
+        arch:
+          - x86_64
+    env:
+      ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build
+        run: |
+          mkdir artifacts
+          ./build-linux.sh
+          mv ffmpeg-*-audio-linux-* artifacts
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ffmpeg-linux-${{ env.ARCH }}
+          path: artifacts/
+
+  package-windows:
+    runs-on: ubuntu-latest
+    container: quay.io/acoustid/chromaprint-build-base:xenial
+    strategy:
+      matrix:
+        arch:
+          - x86_64
+    env:
+      ARCH: ${{ matrix.arch }}
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build
+        run: |
+          mkdir artifacts
+          ./build-windows.sh
+          mv ffmpeg-*-audio-windows-* artifacts
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ffmpeg-windows-${{ env.ARCH }}
+          path: artifacts/
+
   package-macos:
     runs-on: macos-latest
     strategy:
@@ -28,3 +72,43 @@ jobs:
         with:
           name: ffmpeg-macos-${{ env.ARCH }}
           path: artifacts/
+
+  release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - package-linux
+      - package-windows
+      - package-macos
+    steps:
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-linux-x86_64
+          path: artifacts/
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-windows-x86_64
+          path: artifacts/
+
+      - uses: actions/download-artifact@v1
+        with:
+          name: ffmpeg-macos-x86_64
+          path: artifacts/
+
+      - name: Make tarballs
+        run: |
+          mkdir artifacts/release/
+          cd artifacts/
+          dirs=$(find . -name 'ffmpeg-*' -type d)
+          for dir in $dirs
+          do
+            name=$(basename $dir)
+            tar cvzf release/$name.tar.gz $dir
+          done
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
