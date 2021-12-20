@@ -37,13 +37,16 @@ case $ARCH in
         ;;
 esac
 
+#	--extra-ldflags="$EXTRA_LDFLAGS"
+#	--extra-cflags="$EXTRA_CFLAGS"
+
 FFMPEG_CONFIGURE_FLAGS+=(
+    --cc=/usr/bin/clang
 	--prefix=$BASE_DIR/$TARGET
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-	--extra-ldflags="$EXTRA_LDFLAGS"
-	--extra-cflags="$EXTRA_CFLAGS"
+    --enable-runtime-cpudetect
 )
 
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}" || (cat ffbuild/config.log && exit 1)
