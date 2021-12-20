@@ -24,12 +24,12 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
 case $ARCH in
     x86_64)
-        EXTRA_CFLAGS="-mmacosx-version-min=10.6"
-        EXTRA_LDFLAGS="-mmacosx-version-min=10.6"
+        EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
+        EXTRA_LDFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
         ;;
     arm64)
-        EXTRA_CFLAGS="-mmacosx-version-min=11.0"
-        EXTRA_LDFLAGS="-mmacosx-version-min=11.0"
+        EXTRA_CFLAGS="-mmacosx-version-min=11.0 -arch=$ARCH"
+        EXTRA_LDFLAGS="-mmacosx-version-min=11.0 -arch=$ARCH"
         ;;
     *)
         echo "Unknown architecture: $ARCH"
@@ -50,7 +50,7 @@ FFMPEG_CONFIGURE_FLAGS+=(
 
 perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 
-make
+make V=1
 make install
 
 chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$TARGET
