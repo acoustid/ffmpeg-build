@@ -9,9 +9,9 @@ Building is done using GitHub Actions. You can find the built binaries on the re
 Supported platforms:
 
   - Linux
-      * x86\_64
+      * `x86\_64-linux-gnu`
   - Windows
-      * x86\_64
+      * `x86\_64-w64-mingw32`
   - macOS
       * `x86_64-apple-macos10.8` (macOS Mountain Lion and newer on Intel CPU)
       * `arm64-apple-macos11` (macOS Big Sur and newer on Apple M1 CPU)
