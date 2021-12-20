@@ -22,14 +22,17 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
+EXTRA_CFLAGS=""
+EXTRA_LDFLAGS=""
+
 case $ARCH in
     x86_64)
         EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
         EXTRA_LDFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
         ;;
     arm64)
-        EXTRA_CFLAGS="-mmacosx-version-min=11.0 -arch=$ARCH"
-        EXTRA_LDFLAGS="-mmacosx-version-min=11.0 -arch=$ARCH"
+        EXTRA_CFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0 -arch=$ARCH"
+        EXTRA_LDFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0 -arch=$ARCH"
         ;;
     *)
         echo "Unknown architecture: $ARCH"
@@ -37,8 +40,6 @@ case $ARCH in
         ;;
 esac
 
-#	--extra-ldflags="$EXTRA_LDFLAGS"
-#	--extra-cflags="$EXTRA_CFLAGS"
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
@@ -46,6 +47,8 @@ FFMPEG_CONFIGURE_FLAGS+=(
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
+	--extra-ldflags="$EXTRA_LDFLAGS"
+    --extra-cflags="$EXTRA_CFLAGS"
     --enable-runtime-cpudetect
 )
 
