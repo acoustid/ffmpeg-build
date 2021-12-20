@@ -22,19 +22,19 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-OSX_VERSION=10.6
+#OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+OSX_VERSION=10.8
 
 FFMPEG_CONFIGURE_FLAGS+=(
 	--prefix=$BASE_DIR/$TARGET
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-	--extra-ldflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
-	--extra-cflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
+	--extra-ldflags="-mmacosx-version-min=$OSX_VERSION -arch $ARCH"
+	--extra-cflags="-mmacosx-version-min=$OSX_VERSION -arch $ARCH"
 )
 
-./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
+./configure "${FFMPEG_CONFIGURE_FLAGS[@]}" || (cat ffbuild/config.log && exit 1)
 
 perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 
