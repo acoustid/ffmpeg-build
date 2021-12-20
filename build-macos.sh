@@ -24,12 +24,12 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
 case $ARCH in
     x86_64)
-        EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch x86_64"
-        EXTRA_LDFLAGS="-mmacosx-version-min=10.6 -arch x86_64"
+        EXTRA_CFLAGS="-mmacosx-version-min=10.6"
+        EXTRA_LDFLAGS="-mmacosx-version-min=10.6"
         ;;
-    amd64)
-        EXTRA_CFLAGS="-mmacosx-version-min=11.0 -target arm64-apple-macos11"
-        EXTRA_LDFLAGS="-mmacosx-version-min=11.0 -target arm64-apple-macos11"
+    arm64)
+        EXTRA_CFLAGS="-mmacosx-version-min=11.0"
+        EXTRA_LDFLAGS="-mmacosx-version-min=11.0"
         ;;
     *)
         echo "Unknown architecture: $ARCH"
