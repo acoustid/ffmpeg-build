@@ -91,11 +91,10 @@ jobs:
         run: |
           mkdir artifacts/release/
           cd artifacts/
-          dirs=$(find . -name 'ffmpeg-*' -type d)
-          for dir in $dirs
+          for dir in ffmpeg-*/ffmpeg-*
           do
             name=$(basename $dir)
-            tar cvzf release/$name.tar.gz $dir
+            tar czf release/$name.tar.gz $dir
           done
           ls -l release/
       - name: Release
