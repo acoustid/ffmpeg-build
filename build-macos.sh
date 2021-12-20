@@ -22,16 +22,28 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-#OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
-OSX_VERSION=10.8
+case $ARCH in
+    x86_64)
+        EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch x86_64"
+        EXTRA_LDFLAGS="-mmacosx-version-min=10.6 -arch x86_64"
+        ;;
+    amd64)
+        EXTRA_CFLAGS="-mmacosx-version-min=11.0 -target arm64-apple-macos11"
+        EXTRA_LDFLAGS="-mmacosx-version-min=11.0 -target arm64-apple-macos11"
+        ;;
+    *)
+        echo "Unknown architecture: $ARCH"
+        exit 1
+        ;;
+esac
 
 FFMPEG_CONFIGURE_FLAGS+=(
 	--prefix=$BASE_DIR/$TARGET
 	--enable-cross-compile
 	--target-os=darwin
 	--arch=$ARCH
-	--extra-ldflags="-mmacosx-version-min=$OSX_VERSION -arch $ARCH"
-	--extra-cflags="-mmacosx-version-min=$OSX_VERSION -arch $ARCH"
+	--extra-ldflags="$EXTRA_LDFLAGS"
+	--extra-cflags="$EXTRA_CFLAGS"
 )
 
 ./configure "${FFMPEG_CONFIGURE_FLAGS[@]}" || (cat ffbuild/config.log && exit 1)
