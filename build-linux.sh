@@ -17,46 +17,47 @@ fi
 TARGET=ffmpeg-$FFMPEG_VERSION-audio-linux-$ARCH
 
 case $ARCH in
-i686)
-    FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
-    ;;
-arm*)
-    FFMPEG_CONFIGURE_FLAGS+=(
-        --enable-cross-compile
-        --cross-prefix=arm-linux-gnueabihf-
-        --target-os=linux
-        --arch=arm
-    )
-    case $ARCH in
-    armv7-a)
-        FFMPEG_CONFIGURE_FLAGS+=(
-            --cpu=armv7-a
-        )
+    x86_64)
         ;;
-    armv8-a)
-        FFMPEG_CONFIGURE_FLAGS+=(
-            --cpu=armv8-a
-        )
+    i686)
+        FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
         ;;
-    armhf-rpi2)
+    arm*)
         FFMPEG_CONFIGURE_FLAGS+=(
-            --cpu=cortex-a7
-            --extra-cflags='-fPIC -mcpu=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -mvectorize-with-neon-quad'
+            --enable-cross-compile
+            --cross-prefix=arm-linux-gnueabihf-
+            --target-os=linux
+            --arch=arm
         )
+        case $ARCH in
+            armv7-a)
+                FFMPEG_CONFIGURE_FLAGS+=(
+                    --cpu=armv7-a
+                )
+                ;;
+            armv8-a)
+                FFMPEG_CONFIGURE_FLAGS+=(
+                    --cpu=armv8-a
+                )
+                ;;
+            armhf-rpi2)
+                FFMPEG_CONFIGURE_FLAGS+=(
+                    --cpu=cortex-a7
+                    --extra-cflags='-fPIC -mcpu=cortex-a7 -mfloat-abi=hard -mfpu=neon-vfpv4 -mvectorize-with-neon-quad'
+                )
+                ;;
+            armhf-rpi3)
+                FFMPEG_CONFIGURE_FLAGS+=(
+                    --cpu=cortex-a53
+                    --extra-cflags='-fPIC -mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mvectorize-with-neon-quad'
+                )
+                ;;
+        esac
         ;;
-    armhf-rpi3)
-        FFMPEG_CONFIGURE_FLAGS+=(
-            --cpu=cortex-a53
-            --extra-cflags='-fPIC -mcpu=cortex-a53 -mfloat-abi=hard -mfpu=neon-fp-armv8 -mvectorize-with-neon-quad'
-        )
+    *)
+        echo "Unknown architecture: $ARCH"
+        exit 1
         ;;
-    esac
-    ;;
-x86_64)
-    ;;
-*)
-    echo "Unknown architecture"
-    exit 1
 esac
 
 BUILD_DIR=$(mktemp -d -p $(pwd) build.XXXXXXXX)
@@ -67,7 +68,8 @@ tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
 FFMPEG_CONFIGURE_FLAGS+=(--prefix=$BASE_DIR/$TARGET)
 
-./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
+./configure "${FFMPEG_CONFIGURE_FLAGS[@]}" || (cat ffbuild/config.log && exit 1)
+
 make
 make install
 

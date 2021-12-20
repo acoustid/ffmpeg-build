@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-TARGET=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
+OUTPUT_DIR=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
 
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
@@ -22,23 +22,37 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
-OSX_SDK=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk
-OSX_VERSION=10.6
+# https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary#Update-the-Architecture-List-of-Custom-Makefiles
+case $ARCH in
+    x86_64)
+        TARGET="x86_64-apple-macos10.8"
+        ;;
+    arm64)
+        TARGET="arm64-apple-macos11"
+        ;;
+    *)
+        echo "Unknown architecture: $ARCH"
+        exit 1
+        ;;
+esac
+
 
 FFMPEG_CONFIGURE_FLAGS+=(
-	--prefix=$BASE_DIR/$TARGET
-	--enable-cross-compile
-	--target-os=darwin
-	--arch=$ARCH
-	--extra-ldflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
-	--extra-cflags="-isysroot $OSX_SDK -mmacosx-version-min=$OSX_VERSION -arch $ARCH"
+    --cc=/usr/bin/clang
+    --prefix=$BASE_DIR/$OUTPUT_DIR
+    --enable-cross-compile
+    --target-os=darwin
+    --arch=$ARCH
+    --extra-ldflags="-target $TARGET"
+    --extra-cflags="-target $TARGET"
+    --enable-runtime-cpudetect
 )
 
-./configure "${FFMPEG_CONFIGURE_FLAGS[@]}"
+./configure "${FFMPEG_CONFIGURE_FLAGS[@]}" || (cat ffbuild/config.log && exit 1)
 
 perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 
-make
+make V=1
 make install
 
-chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$TARGET
+chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$OUTPUT_DIR
