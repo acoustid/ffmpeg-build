@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-TARGET=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
+OUTPUT_DIR=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
 
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
@@ -39,7 +39,7 @@ esac
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
-    --prefix=$BASE_DIR/$TARGET
+    --prefix=$BASE_DIR/$OUTPUT_DIR
     --enable-cross-compile
     --target-os=darwin
     --arch=$ARCH
@@ -55,4 +55,4 @@ perl -pi -e 's{HAVE_MACH_MACH_TIME_H 1}{HAVE_MACH_MACH_TIME_H 0}' config.h
 make V=1
 make install
 
-chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$TARGET
+chown -R $(stat -f '%u:%g' $BASE_DIR) $BASE_DIR/$OUTPUT_DIR
