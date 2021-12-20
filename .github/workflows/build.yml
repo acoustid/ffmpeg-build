@@ -18,12 +18,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y && \
-          sudo apt-get install -y cmake yasm
+          sudo apt-get install -y yasm
       - name: Build
-        run: |
-          mkdir artifacts
-          ./build-linux.sh
-          mv ffmpeg-*-audio-linux-* artifacts
+        run: ./build-linux.sh
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -43,12 +40,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update -y && \
-          sudo apt-get install -y cmake yasm mingw-w64
+          sudo apt-get install -y yasm mingw-w64
       - name: Build
-        run: |
-          mkdir artifacts
-          ./build-windows.sh
-          mv ffmpeg-*-audio-windows-* artifacts
+        run: ./build-windows.sh
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
@@ -59,61 +53,47 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        arch:
-          - x86_64
-          - arm64
+        # https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary#Update-the-Architecture-List-of-Custom-Makefiles
+        target:
+          - x86_64-apple-macos10.8
+          - arm64-apple-macos11
     env:
-      ARCH: ${{ matrix.arch }}
+      TARGET: ${{ matrix.target }}
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        run: brew install nasm
+        run: brew install yasm
       - name: Build
-        run: |
-          mkdir artifacts
-          ./build-macos.sh
-          mv ffmpeg-*-audio-macos-** artifacts
-      - name: Archive production artifacts
+        run: ./build-macos.sh
+      - name: Archive artifacts
         uses: actions/upload-artifact@v1
         with:
-          name: ffmpeg-macos-${{ env.ARCH }}
+          name: ffmpeg-${{ matrix.target }}
           path: artifacts/
 
   release:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     needs:
       - package-linux
       - package-windows
       - package-macos
     steps:
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
-          name: ffmpeg-linux-x86_64
           path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-windows-x86_64
-          path: artifacts/
-
-      - uses: actions/download-artifact@v1
-        with:
-          name: ffmpeg-macos-x86_64
-          path: artifacts/
-
       - name: Make tarballs
         run: |
           mkdir artifacts/release/
           cd artifacts/
-          dirs=$(find . -name 'ffmpeg-*' -type d)
-          for dir in $dirs
+          for dir in ffmpeg-*/ffmpeg-*
           do
             name=$(basename $dir)
-            tar cvzf release/$name.tar.gz $dir
+            tar czf release/$name.tar.gz $dir
           done
+          ls -l release/
       - name: Release
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: artifacts/release/*
         env:

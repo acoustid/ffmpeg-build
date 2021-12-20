@@ -12,30 +12,28 @@ then
 	curl -O $FFMPEG_TARBALL_URL
 fi
 
-: ${ARCH?}
+: ${TARGET?}
 
-OUTPUT_DIR=ffmpeg-$FFMPEG_VERSION-audio-macos-$ARCH
+case $TARGET in
+    x86_64-*)
+        ARCH="x86_64"
+        ;;
+    arm64-*)
+        ARCH="arm64"
+        ;;
+    *)
+        echo "Unknown target: $TARGET"
+        exit 1
+        ;;
+esac
+
+OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-audio-$TARGET
 
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
-
-# https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary#Update-the-Architecture-List-of-Custom-Makefiles
-case $ARCH in
-    x86_64)
-        TARGET="x86_64-apple-macos10.8"
-        ;;
-    arm64)
-        TARGET="arm64-apple-macos11"
-        ;;
-    *)
-        echo "Unknown architecture: $ARCH"
-        exit 1
-        ;;
-esac
-
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
