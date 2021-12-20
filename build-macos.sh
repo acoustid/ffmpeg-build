@@ -22,14 +22,13 @@ trap 'rm -rf $BUILD_DIR' EXIT
 cd $BUILD_DIR
 tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
 
+# https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary#Update-the-Architecture-List-of-Custom-Makefiles
 case $ARCH in
     x86_64)
-        EXTRA_CFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
-        EXTRA_LDFLAGS="-mmacosx-version-min=10.6 -arch=$ARCH"
+        TARGET="x86_64-apple-macos10.8"
         ;;
     arm64)
-        EXTRA_CFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0 -arch=$ARCH"
-        EXTRA_LDFLAGS="-target arm64-apple-macos11 -mmacosx-version-min=11.0 -arch=$ARCH"
+        TARGET="arm64-apple-macos11"
         ;;
     *)
         echo "Unknown architecture: $ARCH"
@@ -40,12 +39,12 @@ esac
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
-	--prefix=$BASE_DIR/$TARGET
-	--enable-cross-compile
-	--target-os=darwin
-	--arch=$ARCH
-	--extra-ldflags="$EXTRA_LDFLAGS"
-    --extra-cflags="$EXTRA_CFLAGS"
+    --prefix=$BASE_DIR/$TARGET
+    --enable-cross-compile
+    --target-os=darwin
+    --arch=$ARCH
+    --extra-ldflags="-target $TARGET"
+    --extra-cflags="-target $TARGET"
     --enable-runtime-cpudetect
 )
 
