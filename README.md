@@ -13,5 +13,5 @@ Supported platforms:
   - Windows
       * `x86\_64-w64-mingw32`
   - macOS
-      * `x86_64-apple-macos10.8` (macOS Mountain Lion and newer on Intel CPU)
+      * `x86_64-apple-macos10.9` (macOS Mavericks and newer on Intel CPU)
       * `arm64-apple-macos11` (macOS Big Sur and newer on Apple M1 CPU)

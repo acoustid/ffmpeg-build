@@ -55,7 +55,7 @@ jobs:
       matrix:
         # https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary#Update-the-Architecture-List-of-Custom-Makefiles
         target:
-          - x86_64-apple-macos10.8
+          - x86_64-apple-macos10.9
           - arm64-apple-macos11
     env:
       TARGET: ${{ matrix.target }}
