@@ -22,6 +22,14 @@ case $ARCH in
     i686)
         FFMPEG_CONFIGURE_FLAGS+=(--cc="gcc -m32")
         ;;
+    arm64)
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --enable-cross-compile
+            --cross-prefix=aarch64-linux-gnu-
+            --target-os=linux
+            --arch=arm
+        )
+        ;;
     arm*)
         FFMPEG_CONFIGURE_FLAGS+=(
             --enable-cross-compile
