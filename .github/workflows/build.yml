@@ -6,11 +6,12 @@ on:
 
 jobs:
   package-linux:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         arch:
           - x86_64
+          - arm64
     env:
       ARCH: ${{ matrix.arch }}
     steps:
@@ -19,6 +20,11 @@ jobs:
         run: |
           sudo apt-get update -y && \
           sudo apt-get install -y yasm
+      - name: Install ARM64 compiler
+        if: env.ARCH == 'arm64'
+        run: |
+          sudo apt-get update -y && \
+          sudo apt-get install -y gcc-aarch64-linux-gnu
       - name: Build
         run: ./build-linux.sh
       - name: Archive production artifacts
@@ -28,7 +34,7 @@ jobs:
           path: artifacts/
 
   package-windows:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         arch:
