@@ -35,7 +35,7 @@ case $ARCH in
             --enable-cross-compile
             --cross-prefix=arm-linux-gnueabihf-
             --target-os=linux
-            --arch=arm
+            --arch=aarch64
         )
         case $ARCH in
             armv7-a)
