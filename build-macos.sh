@@ -9,7 +9,7 @@ source common.sh
 
 if [ ! -e $FFMPEG_TARBALL ]
 then
-	curl -O $FFMPEG_TARBALL_URL
+	curl -s -L -O $FFMPEG_TARBALL_URL
 fi
 
 : ${TARGET?}
