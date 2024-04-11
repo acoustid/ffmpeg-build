@@ -33,7 +33,7 @@ BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
 
 cd $BUILD_DIR
-tar --strip-components=1 -xf $BASE_DIR/$FFMPEG_TARBALL
+gzip -d $BASE_DIR/$FFMPEG_TARBALL | tar --strip-components=1 -xf -
 
 FFMPEG_CONFIGURE_FLAGS+=(
     --cc=/usr/bin/clang
