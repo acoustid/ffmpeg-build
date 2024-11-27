@@ -169,6 +169,12 @@ FFMPEG_CONFIGURE_FLAGS=(
     --enable-decoder=dsd_lsbf_planar
     --enable-decoder=dsd_msbf_planar
 
+    --enable-muxer=mp3
+    --enable-demuxer=mp3
+    --enable-encoder=mp3
+    --enable-decoder=mp3
+    --enable-libmp3lame
+
     --enable-parser=aac
     --enable-parser=aac_latm
     --enable-parser=ac3
