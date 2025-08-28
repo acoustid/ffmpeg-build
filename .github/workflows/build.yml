@@ -2,7 +2,9 @@ name: Build static ffmpeg
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
   package-linux:
