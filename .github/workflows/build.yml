@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: ./build-linux.sh
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-linux-${{ env.ARCH }}
           path: artifacts/
@@ -50,7 +50,7 @@ jobs:
       - name: Build
         run: ./build-windows.sh
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-windows-${{ env.ARCH }}
           path: artifacts/
@@ -72,7 +72,7 @@ jobs:
       - name: Build
         run: ./build-macos.sh
       - name: Archive artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-${{ matrix.target }}
           path: artifacts/
@@ -84,7 +84,7 @@ jobs:
       - package-windows
       - package-macos
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           path: artifacts/
       - name: Make tarballs
