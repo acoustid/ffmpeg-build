@@ -1,0 +1,6 @@
+/ffmpeg-*.tar.gz
+/lame-*.tar.gz
+/artifacts/
+/build.*/
+/deps.*/
+/lame.*/

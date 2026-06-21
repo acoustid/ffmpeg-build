@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- `encode` build variant with native audio encoders/muxers and MP3 encoding via
+  a statically linked libmp3lame. Selected with `FFMPEG_VARIANT=encode`.
+- `arm64-linux-gnu` builds.
+
+### Changed
+- Upgraded FFmpeg to 8.1.2.
 
 ## [4.2.2-5] - 2020-02-19
 ### Changed
