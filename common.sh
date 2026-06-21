@@ -4,6 +4,13 @@ FFMPEG_VERSION=8.1.2
 FFMPEG_TARBALL=ffmpeg-$FFMPEG_VERSION.tar.gz
 FFMPEG_TARBALL_URL=http://ffmpeg.org/releases/$FFMPEG_TARBALL
 
+# Which build variant to produce:
+#   decode - audio decoders only (default, used for Chromaprint/fpcalc)
+#   encode - decoders plus native audio encoders/muxers for transcoding
+# External-library codecs (e.g. MP3 via libmp3lame) are intentionally never
+# included, to keep the builds fully self-contained.
+FFMPEG_VARIANT=${FFMPEG_VARIANT:-decode}
+
 FFMPEG_CONFIGURE_FLAGS=(
     --disable-shared
     --enable-static
@@ -180,3 +187,66 @@ FFMPEG_CONFIGURE_FLAGS=(
     --enable-parser=tak
     --enable-parser=vorbis
 )
+
+# Label used in the output directory / artifact name for each variant.
+case $FFMPEG_VARIANT in
+    decode)
+        FFMPEG_VARIANT_LABEL=audio
+        ;;
+    encode)
+        FFMPEG_VARIANT_LABEL=audio-encode
+        # Native audio encoders (no external libraries). Note there is no
+        # native MP3 encoder; MP3 output would require libmp3lame/libshine.
+        FFMPEG_CONFIGURE_FLAGS+=(
+            --enable-encoder=aac
+            --enable-encoder=ac3
+            --enable-encoder=eac3
+            --enable-encoder=mp2
+            --enable-encoder=flac
+            --enable-encoder=alac
+            --enable-encoder=wavpack
+            --enable-encoder=tta
+            --enable-encoder=opus
+            --enable-encoder=vorbis
+            --enable-encoder=wmav1
+            --enable-encoder=wmav2
+            --enable-encoder=pcm_s16le
+            --enable-encoder=pcm_s16be
+            --enable-encoder=pcm_s24le
+            --enable-encoder=pcm_s32le
+            --enable-encoder=pcm_f32le
+            --enable-encoder=pcm_u8
+            --enable-encoder=pcm_alaw
+            --enable-encoder=pcm_mulaw
+
+            --enable-muxer=wav
+            --enable-muxer=w64
+            --enable-muxer=aiff
+            --enable-muxer=flac
+            --enable-muxer=mp4
+            --enable-muxer=ipod
+            --enable-muxer=mov
+            --enable-muxer=ogg
+            --enable-muxer=oga
+            --enable-muxer=opus
+            --enable-muxer=wv
+            --enable-muxer=ac3
+            --enable-muxer=eac3
+            --enable-muxer=asf
+            --enable-muxer=mp2
+            --enable-muxer=adts
+            --enable-muxer=latm
+            --enable-muxer=tta
+            --enable-muxer=au
+            --enable-muxer=caf
+            --enable-muxer=matroska
+
+            # Needed for sample-rate / sample-format conversion when transcoding.
+            --enable-filter=aresample
+        )
+        ;;
+    *)
+        echo "Unknown variant: $FFMPEG_VARIANT" >&2
+        exit 1
+        ;;
+esac

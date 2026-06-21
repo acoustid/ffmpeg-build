@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-audio-$ARCH-linux-gnu
+OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-$FFMPEG_VARIANT_LABEL-$ARCH-linux-gnu
 
 case $ARCH in
     x86_64)

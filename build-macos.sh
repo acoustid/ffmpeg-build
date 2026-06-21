@@ -27,7 +27,7 @@ case $TARGET in
         ;;
 esac
 
-OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-audio-$TARGET
+OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-$FFMPEG_VARIANT_LABEL-$TARGET
 
 BUILD_DIR=$BASE_DIR/$(mktemp -d build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT

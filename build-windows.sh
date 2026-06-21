@@ -14,7 +14,7 @@ fi
 
 : ${ARCH?}
 
-OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-audio-$ARCH-w64-mingw32
+OUTPUT_DIR=artifacts/ffmpeg-$FFMPEG_VERSION-$FFMPEG_VARIANT_LABEL-$ARCH-w64-mingw32
 
 BUILD_DIR=$(mktemp -d -p $(pwd) build.XXXXXXXX)
 trap 'rm -rf $BUILD_DIR' EXIT
