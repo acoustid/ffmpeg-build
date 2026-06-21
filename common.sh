@@ -4,11 +4,18 @@ FFMPEG_VERSION=8.1.2
 FFMPEG_TARBALL=ffmpeg-$FFMPEG_VERSION.tar.gz
 FFMPEG_TARBALL_URL=http://ffmpeg.org/releases/$FFMPEG_TARBALL
 
+# LAME is the MP3 encoder used by the encode variant. It is LGPL, which matches
+# the license of these FFmpeg builds (configured without --enable-gpl), and is
+# built statically from source for each target by build-lame.sh.
+LAME_VERSION=3.100
+LAME_TARBALL=lame-$LAME_VERSION.tar.gz
+LAME_TARBALL_URL=https://downloads.sourceforge.net/project/lame/lame/$LAME_VERSION/$LAME_TARBALL
+
 # Which build variant to produce:
 #   decode - audio decoders only (default, used for Chromaprint/fpcalc)
-#   encode - decoders plus native audio encoders/muxers for transcoding
-# External-library codecs (e.g. MP3 via libmp3lame) are intentionally never
-# included, to keep the builds fully self-contained.
+#   encode - decoders plus native audio encoders/muxers for transcoding,
+#            including MP3 encoding via a statically linked libmp3lame
+# No GPL-only or nonfree codecs are ever included, so the builds stay LGPL.
 FFMPEG_VARIANT=${FFMPEG_VARIANT:-decode}
 
 FFMPEG_CONFIGURE_FLAGS=(
@@ -195,9 +202,14 @@ case $FFMPEG_VARIANT in
         ;;
     encode)
         FFMPEG_VARIANT_LABEL=audio-encode
-        # Native audio encoders (no external libraries). Note there is no
-        # native MP3 encoder; MP3 output would require libmp3lame/libshine.
+        # Audio encoders. MP3 has no native FFmpeg encoder, so it is provided by
+        # libmp3lame, which the platform build scripts compile statically and
+        # point at via --extra-cflags/--extra-ldflags.
         FFMPEG_CONFIGURE_FLAGS+=(
+            --enable-libmp3lame
+            --enable-encoder=libmp3lame
+            --enable-muxer=mp3
+
             --enable-encoder=aac
             --enable-encoder=ac3
             --enable-encoder=eac3
