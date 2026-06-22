@@ -31,6 +31,7 @@ Supported platforms:
       * `arm64-linux-gnu`
   - Windows
       * `x86_64-w64-mingw32`
+      * `i686-w64-mingw32` (32-bit)
   - macOS
       * `x86_64-apple-macos10.9` (macOS Mavericks and newer on Intel CPU)
       * `arm64-apple-macos11` (macOS Big Sur and newer on Apple M1 CPU)
